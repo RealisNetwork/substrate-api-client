@@ -287,10 +287,7 @@ pub fn on_extrinsic_msg_submit_only(
     let retstr = msg.as_text().unwrap();
     debug!("got msg {}", retstr);
     match result_from_json_response(retstr) {
-        Ok(val) => {
-            println!("Ending process success");
-            end_process(out, result, Some(val))
-        }
+        Ok(val) => end_process(out, result, Some(val)),
         Err(e) => {
             end_process(out, result, None)?;
             Err(Box::new(e).into())
