@@ -311,7 +311,7 @@ fn end_process(out: Sender, result: ThreadOut<String>, value: Option<String>) ->
 fn parse_status(msg: &str) -> RpcResult<(XtStatus, Option<String>)> {
     let value: serde_json::Value = serde_json::from_str(msg)?;
 
-    if let Some(_) = value["error"].as_object() {
+    if value["error"].as_object().is_some() {
         return Err(into_extrinsic_err(&value));
     }
 
