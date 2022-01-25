@@ -15,10 +15,10 @@
 
 */
 
-use crate::Hash;
 use serde::Serialize;
 use serde_json::{json, to_value, Value};
 use sp_core::storage::StorageKey;
+use sp_core::H256 as Hash;
 
 pub const REQUEST_TRANSFER: u32 = 3;
 
@@ -53,6 +53,17 @@ pub fn chain_subscribe_finalized_heads() -> Value {
 pub fn payment_query_fee_details(xthex_prefixed: &str, at_block: Option<Hash>) -> Value {
     json_req(
         "payment_queryFeeDetails",
+        vec![
+            to_value(xthex_prefixed).unwrap(),
+            to_value(at_block).unwrap(),
+        ],
+        1,
+    )
+}
+
+pub fn payment_query_info(xthex_prefixed: &str, at_block: Option<Hash>) -> Value {
+    json_req(
+        "payment_queryInfo",
         vec![
             to_value(xthex_prefixed).unwrap(),
             to_value(at_block).unwrap(),

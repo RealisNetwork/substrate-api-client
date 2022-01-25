@@ -17,7 +17,7 @@
 use serde::{Deserialize, Serialize};
 
 #[cfg(feature = "ws-client")]
-pub use ws_client::{EventsError, WsRpcClient};
+pub use ws_client::WsRpcClient;
 
 #[cfg(feature = "ws-client")]
 pub mod ws_client;
@@ -34,13 +34,16 @@ pub enum RpcClientError {
     Send(#[from] std::sync::mpsc::SendError<String>),
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, Copy, Clone)]
 pub enum XtStatus {
+    // Todo: some variants to not return a hash with `send_extrinsics`: #175.
     Finalized,
     InBlock,
     Broadcast,
     Ready,
     Future,
+    /// uses `author_submit`
+    SubmitOnly,
     Error,
     Unknown,
 }
