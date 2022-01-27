@@ -20,6 +20,7 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
 // re-export for macro resolution
+#[cfg(feature = "std")]
 pub use ac_primitives as primitives;
 #[cfg(feature = "std")]
 pub use codec;
