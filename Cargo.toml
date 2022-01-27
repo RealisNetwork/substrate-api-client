@@ -105,10 +105,6 @@ path = "src/examples/example_event_callback.rs"
 name = "example_generic_extrinsic"
 path = "src/examples/example_generic_extrinsic.rs"
 
-<<<<<<< HEAD
-# Todo: #179
-=======
->>>>>>> parent of 447587f... update commit version
 [[example]]
 name = "example_print_metadata"
 path = "src/examples/example_print_metadata.rs"
@@ -130,13 +126,6 @@ name = "example_sudo"
 path = "src/examples/example_sudo.rs"
 
 [[example]]
-<<<<<<< HEAD
-=======
-name = "example_custom_client"
-path = "src/examples/example_custom_client.rs"
-
-[[example]]
->>>>>>> parent of 447587f... update commit version
 name = "example_get_existential_deposit"
 path = "src/examples/example_get_existential_deposit.rs"
 
