@@ -61,16 +61,22 @@ fn main() {
                             println!(">>>>>>>>>> balances event: {:?}", be);
                             match &be {
 <<<<<<< HEAD
+<<<<<<< HEAD
                                 balances::Event::Transfer { from, to, amount } => {
                                     println!("Transactor: {:?}", from);
                                     println!("Destination: {:?}", to);
                                     println!("Value: {:?}", amount);
 =======
+=======
+>>>>>>> parent of fb574d7... bump substrate@1d8f7b (#189)
                                 balances::Event::Transfer(transactor, dest, value) => {
                                     println!("Transactor: {:?}", transactor);
                                     println!("Destination: {:?}", dest);
                                     println!("Value: {:?}", value);
+<<<<<<< HEAD
 >>>>>>> parent of 447587f... update commit version
+=======
+>>>>>>> parent of fb574d7... bump substrate@1d8f7b (#189)
                                     return;
                                 }
                                 _ => {
