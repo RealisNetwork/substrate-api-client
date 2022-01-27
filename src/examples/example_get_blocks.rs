@@ -21,15 +21,24 @@ extern crate clap;
 
 use clap::App;
 
+<<<<<<< HEAD
 use node_template_runtime::{Block, Header};
 use sp_core::sr25519;
 use sp_runtime::generic::SignedBlock as SignedBlockG;
+=======
+use sp_core::sr25519;
+
+use node_template_runtime::{Block, Header, SignedBlock};
+>>>>>>> parent of 447587f... update commit version
 use std::sync::mpsc::channel;
 use substrate_api_client::rpc::WsRpcClient;
 use substrate_api_client::Api;
 
+<<<<<<< HEAD
 type SignedBlock = SignedBlockG<Block>;
 
+=======
+>>>>>>> parent of 447587f... update commit version
 fn main() {
     env_logger::init();
     let url = get_node_url_from_cli();
@@ -39,11 +48,14 @@ fn main() {
 
     let head = api.get_finalized_head().unwrap().unwrap();
 
+<<<<<<< HEAD
     println!(
         "Genesis block: \n {:?} \n",
         api.get_block_by_num::<Block>(Some(0)).unwrap()
     );
 
+=======
+>>>>>>> parent of 447587f... update commit version
     println!("Finalized Head:\n {} \n", head);
 
     let h: Header = api.get_header(Some(head)).unwrap().unwrap();

@@ -13,8 +13,12 @@
     limitations under the License.
 */
 
+<<<<<<< HEAD
 //! This examples floats the node with a series of transactions.
 
+=======
+//! This examples floates the node with a series of transactions
+>>>>>>> parent of 447587f... update commit version
 // run this against test node with
 // > substrate-test-node --dev --execution native --ws-port 9979 -ltxpool=debug
 
@@ -51,10 +55,17 @@ fn main() {
         #[allow(clippy::redundant_clone)]
         let xt: UncheckedExtrinsicV4<_> = compose_extrinsic_offline!(
             api.clone().signer.unwrap(),
+<<<<<<< HEAD
             Call::Balances(BalancesCall::transfer {
                 dest: GenericAddress::Id(to.clone()),
                 value: 1_000_000
             }),
+=======
+            Call::Balances(BalancesCall::transfer(
+                GenericAddress::Id(to.clone()),
+                1_000_000
+            )),
+>>>>>>> parent of 447587f... update commit version
             nonce,
             Era::Immortal,
             api.genesis_hash,

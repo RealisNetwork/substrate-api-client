@@ -14,8 +14,14 @@
 */
 
 use codec::{Decode, Encode};
+<<<<<<< HEAD
 use sp_core::crypto::Pair;
 use sp_keyring::AccountKeyring;
+=======
+use keyring::AccountKeyring;
+
+use sp_core::crypto::Pair;
+>>>>>>> parent of 447587f... update commit version
 
 use substrate_api_client::{
     compose_extrinsic, rpc::WsRpcClient, utils::FromHexString, Api, UncheckedExtrinsicV4, XtStatus,
@@ -31,7 +37,11 @@ fn main() {
     let url = "ws://127.0.0.1:9944";
 
     let signer = AccountKeyring::Alice.pair();
+<<<<<<< HEAD
     let client = WsRpcClient::new(url);
+=======
+    let client = WsRpcClient::new(&url);
+>>>>>>> parent of 447587f... update commit version
 
     let api = Api::new(client)
         .map(|api| api.set_signer(signer.clone()))

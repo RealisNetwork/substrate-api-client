@@ -52,10 +52,14 @@ fn main() {
     #[allow(clippy::redundant_clone)]
     let xt: UncheckedExtrinsicV4<_> = compose_extrinsic_offline!(
         api.clone().signer.unwrap(),
+<<<<<<< HEAD
         Call::Balances(BalancesCall::transfer {
             dest: to.clone(),
             value: 42
         }),
+=======
+        Call::Balances(BalancesCall::transfer(to.clone(), 42)),
+>>>>>>> parent of 447587f... update commit version
         api.get_nonce().unwrap(),
         Era::mortal(period, h.number.into()),
         api.genesis_hash,
