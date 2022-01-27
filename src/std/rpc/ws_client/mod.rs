@@ -301,11 +301,7 @@ fn end_process(out: Sender, result: ThreadOut<String>, value: Option<String>) ->
 }
 
 fn parse_status(msg: &str) -> RpcResult<(XtStatus, Option<String>)> {
-    warn!("Got msg: {}", msg);
-
     let value: serde_json::Value = serde_json::from_str(msg)?;
-
-    warn!("Got value: {:?}", value);
 
     if value["error"].as_object().is_some() {
         return Err(into_extrinsic_err(&value));
@@ -313,8 +309,6 @@ fn parse_status(msg: &str) -> RpcResult<(XtStatus, Option<String>)> {
 
     match value["params"]["result"].as_object() {
         Some(obj) => {
-            warn!("obj: {:?}", obj);
-
             if let Some(hash) = obj.get("finalized") {
                 info!("finalized: {:?}", hash);
                 Ok((XtStatus::Finalized, Some(hash.to_string())))
