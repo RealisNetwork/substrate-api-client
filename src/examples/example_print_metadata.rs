@@ -19,19 +19,12 @@
 #[macro_use]
 extern crate clap;
 
-<<<<<<< HEAD
-=======
 use std::convert::TryFrom;
 
->>>>>>> parent of 447587f... update commit version
 use clap::App;
 
 use sp_core::sr25519;
 
-<<<<<<< HEAD
-use std::convert::TryFrom;
-=======
->>>>>>> parent of 447587f... update commit version
 use substrate_api_client::rpc::WsRpcClient;
 use substrate_api_client::{Api, Metadata};
 
@@ -45,18 +38,10 @@ fn main() {
     let meta = Metadata::try_from(api.get_metadata().unwrap()).unwrap();
 
     meta.print_overview();
-<<<<<<< HEAD
-    meta.print_pallets();
-    meta.print_pallets_with_calls();
-    meta.print_pallets_with_events();
-    meta.print_pallets_with_errors();
-    meta.print_pallets_with_constants();
-=======
     meta.print_modules_with_calls();
     meta.print_modules_with_events();
     meta.print_modules_with_errors();
     meta.print_modules_with_constants();
->>>>>>> parent of 447587f... update commit version
 
     // print full substrate metadata json formatted
     println!(
