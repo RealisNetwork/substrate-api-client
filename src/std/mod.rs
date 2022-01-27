@@ -13,7 +13,7 @@ pub use transaction_payment::FeeDetails;
 
 pub use crate::std::rpc::XtStatus;
 pub use crate::utils::FromHexString;
-pub use ac_node_api::metadata::{InvalidMetadataError, Metadata, MetadataError};
+pub use ac_node_api::metadata::{Metadata, MetadataError};
 use ac_primitives::{AccountData, AccountInfo};
 use sp_core::H256 as Hash;
 
@@ -40,64 +40,6 @@ pub trait RpcClient {
     fn send_extrinsic(&self, xthex_prefixed: String, exit_on: XtStatus) -> ApiResult<Option<Hash>>;
 }
 
-/// Api to talk with substrate-nodes
-///
-/// It is generic over the `RpcClient` trait, so you can use any rpc-backend you like.
-///
-/// # Custom Client Example
-///
-/// ```no_run
-/// use substrate_api_client::rpc::json_req::author_submit_extrinsic;
-/// use substrate_api_client::{
-///     Api, ApiClientError, ApiResult, FromHexString, Hash, RpcClient, Value, XtStatus,
-/// };
-/// struct MyClient {
-///     // pick any request crate, such as ureq::Agent
-///     _inner: (),
-/// }
-///
-/// impl MyClient {
-///     pub fn new() -> Self {
-///         Self {
-///             // ureq::agent()
-///             _inner: (),
-///         }
-///     }
-///
-///     pub fn send_json<R>(
-///         &self,
-///         _path: String,
-///         _json: Value,
-///     ) -> Result<R, Box<dyn std::error::Error>> {
-///         // you can figure this out...self.inner...send_json...
-///         todo!()
-///     }
-/// }
-///
-/// impl RpcClient for MyClient {
-///     fn get_request(&self, jsonreq: serde_json::Value) -> ApiResult<String> {
-///         self.send_json::<Value>("".into(), jsonreq)
-///             .map(|v| v.to_string())
-///             .map_err(|err| ApiClientError::RpcClient(err.to_string()))
-///     }
-///
-///     fn send_extrinsic(
-///         &self,
-///         xthex_prefixed: String,
-///         _exit_on: XtStatus,
-///     ) -> ApiResult<Option<Hash>> {
-///         let jsonreq = author_submit_extrinsic(&xthex_prefixed);
-///         let res: String = self
-///             .send_json("".into(), jsonreq)
-///             .map_err(|err| ApiClientError::RpcClient(err.to_string()))?;
-///         Ok(Some(Hash::from_hex(res)?))
-///     }
-/// }
-///
-/// let client = MyClient::new();
-/// let _api = Api::<(), _>::new(client);
-///
-/// ```
 #[derive(Clone)]
 pub struct Api<P, Client>
 where
@@ -219,8 +161,8 @@ where
         let storagekey: sp_core::storage::StorageKey = self
             .metadata
             .storage_map_key::<AccountId, AccountInfo>("System", "Account", address.clone())?;
-
-        info!("storage key is: 0x{}", hex::encode(&storagekey));
+        info!("storagekey {:?}", storagekey);
+        info!("storage key is: 0x{}", hex::encode(storagekey.0.clone()));
         self.get_storage_by_key_hash(storagekey, None)
     }
 
@@ -283,7 +225,7 @@ where
         let storagekey = self
             .metadata
             .storage_value_key(storage_prefix, storage_key_name)?;
-        info!("storage key is: 0x{}", hex::encode(&storagekey));
+        info!("storage key is: 0x{}", hex::encode(storagekey.0.clone()));
         self.get_storage_by_key_hash(storagekey, at_block)
     }
 
@@ -297,7 +239,7 @@ where
         let storagekey =
             self.metadata
                 .storage_map_key::<K, V>(storage_prefix, storage_key_name, map_key)?;
-        info!("storage key is: 0x{}", hex::encode(&storagekey));
+        info!("storage key is: 0x{}", hex::encode(storagekey.0.clone()));
         self.get_storage_by_key_hash(storagekey, at_block)
     }
 
@@ -325,7 +267,7 @@ where
             first,
             second,
         )?;
-        info!("storage key is: 0x{}", hex::encode(&storagekey));
+        info!("storage key is: 0x{}", hex::encode(storagekey.0.clone()));
         self.get_storage_by_key_hash(storagekey, at_block)
     }
 
@@ -364,7 +306,7 @@ where
         let storagekey = self
             .metadata
             .storage_value_key(storage_prefix, storage_key_name)?;
-        info!("storage key is: 0x{}", hex::encode(&storagekey));
+        info!("storage key is: 0x{}", hex::encode(storagekey.0.clone()));
         self.get_storage_proof_by_keys(vec![storagekey], at_block)
     }
 
@@ -378,7 +320,7 @@ where
         let storagekey =
             self.metadata
                 .storage_map_key::<K, V>(storage_prefix, storage_key_name, map_key)?;
-        info!("storage key is: 0x{}", hex::encode(&storagekey));
+        info!("storage key is: 0x{}", hex::encode(storagekey.0.clone()));
         self.get_storage_proof_by_keys(vec![storagekey], at_block)
     }
 
@@ -396,7 +338,7 @@ where
             first,
             second,
         )?;
-        info!("storage key is: 0x{}", hex::encode(&storagekey));
+        info!("storage key is: 0x{}", hex::encode(storagekey.0.clone()));
         self.get_storage_proof_by_keys(vec![storagekey], at_block)
     }
 
@@ -460,15 +402,9 @@ where
     }
 
     pub fn get_existential_deposit(&self) -> ApiResult<Balance> {
-        let ed_id: &'static str = "ExistentialDeposit";
-        let ed = self
-            .metadata
-            .pallet("Balances")?
-            .constants
-            .get(ed_id)
-            .ok_or(MetadataError::ConstantNotFound(ed_id))?;
-
-        Ok(Decode::decode(&mut ed.value.as_slice())?)
+        let module = self.metadata.module_with_constants_by_name("Balances")?;
+        let constant_metadata = module.constant_by_name("ExistentialDeposit")?;
+        Decode::decode(&mut constant_metadata.get_value().as_slice()).map_err(|e| e.into())
     }
 
     #[cfg(feature = "ws-client")]
@@ -542,11 +478,9 @@ pub enum ApiClientError {
     Disconnected(#[from] sp_std::sync::mpsc::RecvError),
     #[error("Metadata Error: {0}")]
     Metadata(#[from] MetadataError),
-    #[error("InvalidMetadata: {0}")]
-    InvalidMetadata(#[from] InvalidMetadataError),
     #[cfg(feature = "ws-client")]
     #[error("Events Error: {0}")]
-    NodeApi(#[from] ac_node_api::error::Error),
+    Events(#[from] rpc::EventsError),
     #[error("Error decoding storage value: {0}")]
     StorageValueDecode(#[from] extrinsic::codec::Error),
     #[error("Received invalid hex string: {0}")]
