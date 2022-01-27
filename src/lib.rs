@@ -21,19 +21,18 @@
 pub mod std;
 
 #[cfg(feature = "std")]
-pub mod extrinsic;
-
-pub mod utils;
-
-#[cfg(feature = "std")]
 pub use crate::std::*;
 
+// re-export for macro resolution
+pub use sp_runtime;
+
+#[macro_use]
+pub mod extrinsic;
+pub mod utils;
+
 pub use ac_primitives::{
-    AccountData, AccountDataGen, AccountInfo, AccountInfoGen, Balance, BlockNumber, GenericAddress,
-    GenericExtra, Hash, Index, Moment, RefCount, UncheckedExtrinsicV4,
+    AccountData, AccountDataGen, AccountInfo, AccountInfoGen, Balance, BlockNumber, Hash, Index,
+    Moment, RefCount,
 };
 
-#[cfg(feature = "std")]
-pub use ac_compose_macros::compose_extrinsic;
-
-pub use ac_compose_macros::{compose_call, compose_extrinsic_offline};
+pub use extrinsic::xt_primitives::{GenericAddress, GenericExtra, UncheckedExtrinsicV4};

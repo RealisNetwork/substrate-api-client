@@ -14,7 +14,7 @@ pub use transaction_payment::FeeDetails;
 pub use crate::std::rpc::XtStatus;
 pub use crate::utils::FromHexString;
 pub use ac_node_api::metadata::{InvalidMetadataError, Metadata, MetadataError};
-use ac_primitives::{AccountData, AccountInfo, Balance};
+use ac_primitives::{AccountData, AccountInfo};
 use sp_core::H256 as Hash;
 
 pub mod rpc;
@@ -28,6 +28,7 @@ use sp_rpc::number::NumberOrHex;
 use transaction_payment::{InclusionFee, RuntimeDispatchInfo};
 
 use crate::rpc::json_req;
+use crate::{extrinsic, Balance};
 
 pub type ApiResult<T> = Result<T, ApiClientError>;
 
@@ -522,6 +523,7 @@ fn inclusion_fee_with_balance(
 }
 
 #[derive(Debug, thiserror::Error)]
+
 pub enum ApiClientError {
     #[error("Fetching genesis hash failed. Are you connected to the correct endpoint?")]
     Genesis,
@@ -546,7 +548,7 @@ pub enum ApiClientError {
     #[error("Events Error: {0}")]
     NodeApi(#[from] ac_node_api::error::Error),
     #[error("Error decoding storage value: {0}")]
-    StorageValueDecode(#[from] codec::Error),
+    StorageValueDecode(#[from] extrinsic::codec::Error),
     #[error("Received invalid hex string: {0}")]
     InvalidHexString(#[from] hex::FromHexError),
     #[error("Error deserializing with serde: {0}")]

@@ -22,12 +22,16 @@ use sp_core::crypto::Pair;
 
 use substrate_api_client::rpc::WsRpcClient;
 <<<<<<< HEAD
+<<<<<<< HEAD
 use substrate_api_client::{
     compose_extrinsic, Api, GenericAddress, UncheckedExtrinsicV4, XtStatus,
 };
 =======
 use substrate_api_client::{compose_extrinsic, Api, UncheckedExtrinsicV4, XtStatus};
 >>>>>>> parent of 447587f... update commit version
+=======
+use substrate_api_client::{compose_extrinsic, Api, UncheckedExtrinsicV4, XtStatus};
+>>>>>>> parent of 4589ccb... Independent compose-macros crate (#186)
 
 fn main() {
     env_logger::init();

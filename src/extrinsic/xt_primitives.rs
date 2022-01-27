@@ -15,16 +15,16 @@
 
 */
 
-//! Primitives for substrate extrinsics.
+use sp_std::prelude::*;
 
-extern crate alloc;
+#[cfg(feature = "std")]
+use std::fmt;
 
 use codec::{Compact, Decode, Encode, Error, Input};
+//use indices::address::Address;
 use sp_core::blake2_256;
 use sp_core::H256;
 use sp_runtime::{generic::Era, MultiSignature};
-use sp_std::fmt;
-use sp_std::prelude::*;
 
 pub use sp_runtime::{AccountId32 as AccountId, MultiAddress};
 
@@ -32,15 +32,14 @@ pub type AccountIndex = u64;
 
 pub type GenericAddress = sp_runtime::MultiAddress<AccountId, ()>;
 
-pub type CallIndex = [u8; 2];
-
 /// Simple generic extra mirroring the SignedExtra currently used in extrinsics. Does not implement
 /// the SignedExtension trait. It simply encodes to the same bytes as the real SignedExtra. The
 /// Order is (CheckVersion, CheckGenesis, Check::Era, CheckNonce, CheckWeight, transactionPayment::ChargeTransactionPayment).
 /// This can be locked up in the System module. Fields that are merely PhantomData are not encoded and are
 /// therefore omitted here.
-#[derive(Decode, Encode, Clone, Eq, PartialEq, Debug)]
-pub struct GenericExtra(pub Era, pub Compact<u32>, pub Compact<u128>);
+#[cfg_attr(feature = "std", derive(Debug))]
+#[derive(Decode, Encode, Clone, Eq, PartialEq)]
+pub struct GenericExtra(Era, Compact<u32>, Compact<u128>);
 
 impl GenericExtra {
     pub fn new(era: Era, nonce: u32) -> GenericExtra {
@@ -58,7 +57,7 @@ impl Default for GenericExtra {
 /// Order is the same as declared in the extra.
 pub type AdditionalSigned = (u32, u32, H256, H256, (), (), ());
 
-#[derive(Decode, Encode, Clone, Eq, PartialEq, Debug)]
+#[derive(Encode, Clone)]
 pub struct SignedPayload<Call>((Call, GenericExtra, AdditionalSigned));
 
 impl<Call> SignedPayload<Call>
@@ -83,9 +82,9 @@ where
     }
 }
 
-/// Mirrors the currently used Extrinsic format (V4) from substrate. Has less traits and methods though.
+/// Mirrors the currently used Extrinsic format (V3) from substrate. Has less traits and methods though.
 /// The SingedExtra used does not need to implement SingedExtension here.
-#[derive(Clone, Eq, PartialEq)]
+#[derive(Clone, PartialEq)]
 pub struct UncheckedExtrinsicV4<Call> {
     pub signature: Option<(GenericAddress, MultiSignature, GenericExtra)>,
     pub function: Call,
@@ -107,13 +106,15 @@ where
         }
     }
 
-    pub fn hex_encode(&self) -> alloc::string::String {
+    #[cfg(feature = "std")]
+    pub fn hex_encode(&self) -> String {
         let mut hex_str = hex::encode(self.encode());
         hex_str.insert_str(0, "0x");
         hex_str
     }
 }
 
+#[cfg(feature = "std")]
 impl<Call> fmt::Debug for UncheckedExtrinsicV4<Call>
 where
     Call: fmt::Debug,
@@ -206,6 +207,7 @@ fn encode_with_vec_prefix<T: Encode, F: Fn(&mut Vec<u8>)>(encoder: F) -> Vec<u8>
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::extrinsic::xt_primitives::{GenericAddress, GenericExtra};
     use sp_runtime::MultiSignature;
 
     #[test]
