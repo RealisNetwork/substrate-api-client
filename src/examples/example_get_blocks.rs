@@ -20,12 +20,15 @@
 extern crate clap;
 
 use clap::App;
-use sp_core::sr25519;
 
-use node_template_runtime::{Block, Header, SignedBlock};
+use node_template_runtime::{Block, Header};
+use sp_core::sr25519;
+use sp_runtime::generic::SignedBlock as SignedBlockG;
 use std::sync::mpsc::channel;
 use substrate_api_client::rpc::WsRpcClient;
 use substrate_api_client::Api;
+
+type SignedBlock = SignedBlockG<Block>;
 
 fn main() {
     env_logger::init();
@@ -35,11 +38,6 @@ fn main() {
     let api = Api::<sr25519::Pair, _>::new(client).unwrap();
 
     let head = api.get_finalized_head().unwrap().unwrap();
-
-    println!(
-        "Genesis block: \n {:?} \n",
-        api.get_block_by_num::<Block>(Some(0)).unwrap()
-    );
 
     println!("Finalized Head:\n {} \n", head);
 

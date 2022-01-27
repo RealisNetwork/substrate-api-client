@@ -2,26 +2,11 @@
 name = "api-client-tutorial"
 version = "0.6.0"
 authors = ["Supercomputing Systems AG <info@scs.ch>"]
-<<<<<<< HEAD
 edition = "2021"
-=======
-edition = "2018"
->>>>>>> parent of 447587f... update commit version
 
 [dependencies]
 substrate-api-client = { path = "../.." }
 codec = { package = "parity-scale-codec", features = ["derive"], version = "2.0.0" }
 
-<<<<<<< HEAD
-sp-core = { version = "4.1.0-dev", git = "https://github.com/paritytech/substrate.git", branch = "master" }
-sp-keyring = { version = "4.0.0-dev", git = "https://github.com/paritytech/substrate.git", branch = "master" }
-=======
-[dependencies.sp-core]
-git = "https://github.com/paritytech/substrate.git"
-branch = "master"
-
-[dependencies.keyring]
-git = "https://github.com/paritytech/substrate.git"
-branch = "master"
-package = "sp-keyring"
->>>>>>> parent of 447587f... update commit version
+sp-core = { version = "4.0.0-dev", git = "https://github.com/paritytech/substrate.git", rev = "e7b93e1b1abcf0865824c68d10850bbb451e295f" }
+sp-keyring = { version = "4.0.0-dev", git = "https://github.com/paritytech/substrate.git", rev = "e7b93e1b1abcf0865824c68d10850bbb451e295f" }

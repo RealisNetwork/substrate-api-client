@@ -21,7 +21,7 @@ default-features=false
 
 [dependencies.sp-io]
 git = "https://github.com/paritytech/substrate.git"
-branch = "master"
+rev = "e7b93e1b1abcf0865824c68d10850bbb451e295f"
 default-features=false
 features = ["disable_oom", "disable_panic_handler"]
 

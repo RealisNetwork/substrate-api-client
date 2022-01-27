@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 /*
 Copyright 2019 Supercomputing Systems AG
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,36 +13,22 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-=======
->>>>>>> parent of 447587f... update commit version
-=======
->>>>>>> parent of 4589ccb... Independent compose-macros crate (#186)
 use std::sync::mpsc::channel;
 
 use clap::{load_yaml, App};
 use codec::Decode;
 use keyring::AccountKeyring;
 use sp_core::crypto::Pair;
-<<<<<<< HEAD
-<<<<<<< HEAD
 use sp_runtime::app_crypto::sp_core::sr25519;
-=======
->>>>>>> parent of 4589ccb... Independent compose-macros crate (#186)
 use sp_runtime::AccountId32 as AccountId;
 use sp_runtime::MultiAddress;
 
 use substrate_api_client::rpc::WsRpcClient;
-<<<<<<< HEAD
-=======
 use sp_runtime::AccountId32 as AccountId;
 use sp_runtime::MultiAddress;
 
 use substrate_api_client::rpc::WsRpcClient;
 use substrate_api_client::sp_runtime::app_crypto::sp_core::sr25519;
->>>>>>> parent of 447587f... update commit version
-=======
-use substrate_api_client::sp_runtime::app_crypto::sp_core::sr25519;
->>>>>>> parent of 4589ccb... Independent compose-macros crate (#186)
 use substrate_api_client::{Api, ApiResult, XtStatus};
 
 // Look at the how the transfer event looks like in in the metadata
