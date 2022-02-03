@@ -372,6 +372,7 @@ fn result_from_json_response(resp: &str) -> RpcResult<String> {
 
 #[cfg(test)]
 mod tests {
+    #![feature(assert_matches)]
     use super::*;
     use crate::rpc::RpcClientError;
     use std::assert_matches::assert_matches;
