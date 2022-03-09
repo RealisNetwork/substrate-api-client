@@ -21,7 +21,7 @@ default-features=false
 
 [dependencies.sp-io]
 git = "https://github.com/RealisNetwork/substrate.git"
-branch = "polka_v0.9.9"
+branch = "polkadot-v0.9.9"
 default-features=false
 features = ["disable_oom", "disable_panic_handler"]
 
